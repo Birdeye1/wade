@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff7f2;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Heart Animation */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: pink;
+            clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 80%, 20% 100%, 0 35%);
+            opacity: 0.8;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Slideshow Container */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* Slideshow Image */
+        .mySlides {
+            display: none;
+            width: 25%; /* Reduced size by 4 times */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image caption */
+        .caption {
+            text-align: center;
+            font-size: 1.2em;
+            color: #ff0080;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Hover Effect on Images */
+        .mySlides:hover {
+            transform: scale(1.1) rotate(10deg);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Link before clicking */
+        #smile-link {
+            font-size: 1.5em;
+            color: #ff0080;
+            text-decoration: none;
+            padding: 10px;
+            border: 2px solid #ff0080;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        #smile-link:hover {
+            background-color: #ff0080;
+            color: #fff;
+        }
+
+        /* Background Message (moving) */
+        #background-message {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            font-size: 3em;
+            color: #ff0080;
+            white-space: nowrap;
+            animation: moveText 15s linear infinite;
+        }
+
+        /* Keyframe for moving background text */
+        @keyframes moveText {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
+        }
+
+        /* Surprise Message (Balloon) */
+        .balloon-message {
+            display: none;
+            position: fixed;
+            bottom: 60px; /* Adjusted position below the button */
+            left: 20px; /* Same as the button */
+            background-color: #ffe0e6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1.1em;
+            color: #ff0080;
+            animation: floatUp 2s ease forwards;
+        }
+
+        /* Animation for Balloon Message */
+        @keyframes floatUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(-20px); opacity: 1; }
+        }
+
+        /* Flower Animation */
+        .flower {
+            position: absolute;
+            width: 40px; /* Increased size for visibility */
+            height: 40px;
+            background-color: rgba(255, 105, 180, 0.8); /* Starting color: transparent pink */
+            clip-path: polygon(50% 0%, 100% 100%, 0 100%);
+            border-radius: 50%;
+            opacity: 1;
+            animation: fall 3s forwards, rotate 1s infinite linear, colorChange 3s forwards;
+        }
+
+        /* Flower falling effect */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Flower rotation */
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Flower color change */
+        @keyframes colorChange {
+            0% {
+                background-color: rgba(255, 105, 180, 0.8); /* Transparent pink */
+            }
+            100% {
+                background-color: #8B0000; /* Dark red */
+            }
+        }
+
+        /* Scrolling Audio Bar at the Bottom */
+        .audio-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ff0080;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.2em;
+            white-space: nowrap;
+            animation: scrollLeftToRight 20s linear infinite;
+        }
+
+        /* Scrolling Animation for the Audio Bar */
+        @keyframes scrollLeftToRight {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Hidden message for after song ends */
+        #loveMessage {
+            display: none;
+            font-size: 3em;
+            color: #ff0080;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Audio Element for Background Music -->
+        <audio id="background-music" autoplay loop controls>
+            <source src="audio/happy_song.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <!-- Slideshow Images -->
+        <div class="slide">
+            <img class="mySlides" src="images/photo1.jpg" alt="Photo 1">
+            <div class="caption">Every moment spent with you feels like a beautiful dream come true.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo2.jpg" alt="Photo 2">
+            <div class="caption">You light up my world in ways no one else can.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo3.jpg" alt="Photo 3">
+            <div class="caption">My heart beats for you, and every moment with you feels like home.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo4.jpg" alt="Photo 4">
+            <div class="caption">No words can express how much I cherish every second we share.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo5.jpg" alt="Photo 5">
+            <div class="caption">With you by my side, every day is a celebration of love.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo6.jpg" alt="Photo 6">
+            <div class="caption">You make even the simplest moments unforgettable.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo7.jpg" alt="Photo 7">
+            <div class="caption">You are my sunshine on the darkest days.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo8.jpg" alt="Photo 8">
+            <div class="caption">Every day with you is a beautiful chapter in our love story.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo9.jpg" alt="Photo 9">
+            <div class="caption">You make my heart smile, even when we're apart.</div>
+        </div>
+        <div class="slide">
+            <img class="mySlides" src="images/photo10.jpg" alt="Photo 10">
+            <div class="caption">I love you more than words could ever express.</div>
+        </div>
+    </div>
+
+    <!-- Link to trigger Surprise -->
+    <a href="#" id="smile-link">smile before u click me</a>
+
+    <!-- Hidden Balloon Message -->
+    <div class="balloon-message" id="balloon-message">
+        <p>Hey Wade loves you and cares about you, You’re my favorite person in the world. Here’s to us, forever, may God bless our long journey💖</p>
+    </div>
+
+    <!-- Background Scrolling Message -->
+    <div id="background-message">
+        <p>wade and noku forever</p>
+    </div>
+
+    <!-- Hidden 'I Love You' message -->
+    <div id="loveMessage">
+        <p>I love you!</p>
+    </div>
+
+    <script>
+        // Slideshow Functionality
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.querySelectorAll(".mySlides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
+
+        // Heart Animation
+        setInterval(function() {
+            let heart = document.createElement("div");
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+
+            // Position the heart randomly
+            let randomX = Math.random() * window.innerWidth;
+            let randomY = Math.random() * window.innerHeight;
+            heart.style.left = randomX + "px";
+            heart.style.top = randomY + "px";
+
+            // Make the heart disappear after animation
+            setTimeout(() => {
+                heart.style.opacity = "0";
+                heart.style.transform = "scale(0)";
+            }, 2000);
+
+            // Remove the heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 2500);
+        }, 500);
+
+        // Balloon Message Interaction
+        document.getElementById("smile-link").addEventListener("click", function() {
+            let balloonMessage = document.getElementById("balloon-message");
+            balloonMessage.style.display = "block";
+            setTimeout(function() {
+                balloonMessage.style.display = "none";
+            }, 4000); // Hide balloon message after 4 seconds
+        });
+
+        // Scrolling Audio Bar
+        let audioBar = document.createElement("div");
+        audioBar.classList.add("audio-bar");
+        audioBar.innerText = "Enjoying our song together!";
+        document.body.appendChild(audioBar);
+
+        // Song Ends: Display "I love you" after song ends
+        let backgroundMusic = document.getElementById("background-music");
+        backgroundMusic.onended = function() {
+            let loveMessage = document.getElementById("loveMessage");
+            loveMessage.style.display = "block";
+            setTimeout(() => {
+                loveMessage.style.display = "none"; // Hide after 10 seconds
+            }, 5000);
+        };
+    </script>
+</body>
+</html>
